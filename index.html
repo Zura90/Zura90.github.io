@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek khodam</title>
+    <style>
+        /* General styles */
+        body {
+    background: linear-gradient(45deg, #ffffff, #f90000, #000000, #00cee0, #1d00a8); /* Gradien warna awal */
+    background-size: 900% 400%; /* Ukuran gradien */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    animation: changeColor 10s infinite; /* Animasi ganti warna */
+}
+
+@keyframes changeColor {
+    0% {
+        background-position: 0% 50%; /* Awal posisi gradien */
+    }
+    50% {
+        background-position: 100% 50%; /* Posisi tengah gradien */
+    }
+    100% {
+        background-position: 0% 50%; /* Akhir posisi gradien */
+    }
+}
+
+
+
+        .container {
+            width: 90%;
+            max-width: 350px;
+            padding: 20px;
+            background-color: #d500003b; /* Lighter dark gray background */
+            border: 1px solid #ffffff; /* Dark gray border */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); /* Darker black shadow */
+            border-radius: 10px; /* Rounded corners */
+            text-align: center; /* Center text and button */
+            position: relative;
+        }
+
+        .container:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
+            z-index: -1;
+            border-radius: 10px;
+        }
+
+        h1 {
+    font-weight: bold; /* Bold font for headings */
+    font-family: "Times New Roman", Times, serif;
+    color: #e00000; /* Warna teks */
+    text-shadow: 0 12px 30px rgba(0, 0, 0, 0.9); /* Efek bayangan */
+}
+        p {
+          font-family: "Courier New", Courier, monospace; 
+          font-size: 20px; 
+          color: gray;
+          text-shadow: 0 12px 30px rgba(0, 0, 0, 0.9); 
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #000000;
+            border-radius: 50vh;
+            margin-top: 20px;
+        }
+
+        button[type="submit"], button[type="button"] {
+            padding: 10px 30px;
+            font-size: 16px;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 50vh;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #khodam-info {
+            font-size: 18px;
+            font-family: "Courier New", Courier, monospace;
+            color: white;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #555;
+            border-radius: 10px;
+            border: 1px solid #fff;
+            width: 100%;
+            box-sizing: border-box; /* Ensure padding doesn't affect total width */
+        }
+        
+        footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        background-color: #f0f0f0;
+        padding: 10px 0;
+    }
+
+    footer p {
+        margin: 0;
+    }
+
+    footer a {
+        color: #007bff; /* warna link */
+        text-decoration: none; /* hilangkan garis bawah */
+    }
+
+    footer a:hover {
+        text-decoration: underline; /* garis bawah pada hover */
+    }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.rawgit.com/bungfrangki/efeksalju/2a7805c7/efek-salju.js"></script>
+    
+    <div class="container" id="main-page">
+        <h1>Cek Khodam</h1>
+        <p>Cek khodam kamu sekarang! Buktikan siapa dirimu sebenarnya.</p>
+        <form id="khodamForm">
+            <input type="text" id="name" name="name" placeholder="Masukkan nama kamu">
+            <button type="submit">Cek</button>
+        </form>
+    </div>
+    
+    <div class="container" id="result-page" style="display: none;">
+        <h1>Hasil Cek Khodam</h1>
+        <div id="khodam-info"></div>
+        <button type="button" id="back-button">Ulang</button>
+    </div>
+
+    <script>
+        const khodamData = [
+    "Khodam Harimau Bangkit",
+    "Khodam Macan Terbang",
+    "Khodam Singa Perkasa",
+    "Khodam Naga Tersembunyi",
+    "Khodam Garuda Perkasa",
+    "Khodam Phoenix Bersinar",
+    "Khodam Unicorn Gemilang",
+    "Khodam Griffin Terbang",
+    "Khodam Pegasus Terbang",
+    "Khodam Sphinx Tertawa",
+    "Khodam Centaur Cerdik",
+    "Khodam Feniks Agung",
+    "Khodam Cerberus Setia",
+    "Khodam Hydra Kekal",
+    "Khodam Dragon Naga",
+    "Khodam Basilisk Beracun",
+    "Khodam Minotaur Kuat",
+    "Khodam Yeti Es",
+    "Khodam Bigfoot Misterius",
+    "Khodam Kraken Lautan",
+    "Khodam Chupacabra Tersembunyi",
+    "Khodam Wendigo Kedinginan",
+    "Khodam Kitsune Ceria",
+    "Khodam Tanuki Pintar",
+    "Khodam Kappa Berair",
+    "Khodam Tengu Angin",
+    "Khodam Oni Berkepala Tiga",
+    "Khodam Raiju Petir",
+    "Khodam Kamaitachi Taji",
+    "Khodam Bakeneko Licik",
+    "Khodam Nue Transformasi",
+    "Khodam Komainu Setia",
+    "Khodam Kirin Berkilau",
+    "Khodam Tsuchigumo Laba-laba",
+    "Khodam Jorogumo Cantik",
+    "Khodam Tanuki Gemuk",
+    "Khodam Okami Suci",
+    "Khodam Inugami Setia",
+    "Khodam Tanuki Mencuri",
+    "Khodam Noppera-bo Wajah Kosong",
+    "Khodam Abumi-guchi Pengerat",
+    "Khodam Aka Manto Merah",
+    "Khodam Ashiarai Yashiki Kaki Raksasa",
+    "Khodam Bake-kujira Paus Hantu",
+    "Khodam Buruburu Gemetar",
+    "Khodam Dorotabo Tani Menyusup",
+    "Khodam Funayurei Hantu Laut",
+    "Khodam Gasha-dokuro Tengkorak Raksasa",
+    "Khodam Hanako-san Toilet",
+    "Khodam Hitodama Api Terbang",
+    "Khodam Ikiryo Semangat Terpisah",
+    "Khodam Jinmenju Pohon Wajah",
+    "Khodam Jubokko Pohon Darah",
+    "Khodam Kamikiri Seringai",
+    "Khodam Kawa-no-kami Dewa Sungai",
+    "Khodam Kuchisake-onna Wanita Bermulut Potong",
+    "Khodam Mokumokuren Mata Banyak",
+    "Khodam Mujina Pemalu",
+    "Khodam Namahage Setan Pengusir",
+    "Khodam Nurarihyon Kepala Hijau",
+    "Khodam Noppera-bo Wajah Kosong",
+    "Khodam Nue Transformasi",
+    "Khodam Nuppeppo Lempung Gemuk",
+    "Khodam Nurarihyon Kepala Hijau",
+    "Khodam Oboroguruma Kereta Hantu",
+    "Khodam Odoro-odoro Odoro-odoro",
+    "Khodam Ohaguro-bettari Pahatan Gigi Hitam",
+    "Khodam Okiku Ningyou Boneka",
+    "Khodam Oshiroi Baba Nyonya Berpakaian Putih",
+    "Khodam Rokuro-kubi Kepala Terpisah",
+    "Khodam Satori Pemikiran",
+    "Khodam Shichinin Misaki Pengganggu",
+    "Khodam Shikigami Hantu Tertawa",
+    "Khodam Tanuki Menjadi Diri Sendiri",
+    "Khodam Tengu Berburu",
+    "Khodam Tsuchigumo Laba-laba",
+    "Khodam Umibozu Perompak Lautan",
+    "Khodam Wanyuudou Roda Hantu",
+    "Khodam Yama-uba Raksasa Gunung",
+    "Khodam Yurei Hantu Sedih",
+    "Khodam Zashiki-warashi Setan Kecil",
+    "Khodam Yama-uba Raksasa Gunung",
+    "Khodam Nurarihyon Kepala Hijau",
+    "Khodam Noppera-bo Wajah Kosong",
+    "Khodam Nue Transformasi",
+    "Khodam Nuppeppo Lempung Gemuk",
+    "Khodam Nurarihyon Kepala Hijau",
+    "Khodam Oboroguruma Kereta Hantu",
+    "Khodam Odoro-odoro Odoro-odoro",
+    "Khodam Ohaguro-bettari Pahatan Gigi Hitam",
+    "Khodam Okiku Ningyou Boneka",
+    "Khodam Oshiroi Baba Nyonya Berpakaian Putih",
+    "Khodam Rokuro-kubi Kepala Terpisah",
+    "Khodam Satori Pemikiran",
+    "Khodam Shichinin Misaki Pengganggu",
+    "Khodam Shikigami Hantu Tertawa",
+    "Khodam Tanuki Menjadi Diri Sendiri",
+    "Khodam Tengu Berburu",
+    "Khodam Tsuchigumo Laba-laba",
+    "Khodam Umibozu Perompak Lautan",
+    "Khodam Wanyuudou Roda Hantu",
+    "Khodam Yama-uba Raksasa Gunung",
+    "Khodam Yurei Hantu Sedih",
+    "Khodam Zashiki-warashi Setan Kecil",
+];
+
+        const form = document.querySelector('#khodamForm');
+        const nameInput = document.querySelector('#name');
+        const khodamInfoDiv = document.querySelector('#khodam-info');
+        const mainPage = document.querySelector('#main-page');
+        const resultPage = document.querySelector('#result-page');
+        const backButton = document.querySelector('#back-button');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = nameInput.value.trim();
+            if (name === '') {
+                alert('Masukkan nama terlebih dahulu');
+                return;
+            }
+            const randomKhodam = khodamData[Math.floor(Math.random() * khodamData.length)];
+            khodamInfoDiv.innerHTML = `Khodam yang ada di dalam diri ${name} adalah ${randomKhodam}.`;
+            mainPage.style.display = 'none';
+            resultPage.style.display = 'block';
+        });
+
+        backButton.addEventListener('click', () => {
+            resultPage.style.display = 'none';
+            mainPage.style.display = 'block';
+            nameInput.value = '';
+            khodamInfoDiv.innerHTML = '';
+        });
+    </script>
+    <footer>
+    <p>by <a href="https://api.whatsapp.com/send?phone=+6283892857189" target="_blank">Zura</a> powered [AI]</p>
+</footer>
+
+</body>
+  </html>
+  
